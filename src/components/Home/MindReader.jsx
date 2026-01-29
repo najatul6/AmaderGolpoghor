@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const MindReader = () => {
+const MindReader = ({ back }) => {
   const [step, setStep] = useState(1);
   const [randomResult, setRandomResult] = useState('');
 
@@ -16,7 +16,6 @@ const MindReader = () => {
   ];
 
   const handleMindRead = () => {
-    // Randomly ekta result pick korbe
     const randomIndex = Math.floor(Math.random() * results.length);
     setRandomResult(results[randomIndex]);
     setStep(3);
@@ -24,11 +23,19 @@ const MindReader = () => {
 
   return (
     <div className="p-8 bg-white rounded-3xl shadow-xl border-2 border-pink-200 mt-6 max-w-md mx-auto text-center">
-      <h3 className="text-2xl font-bold text-pink-600 mb-4 font-serif">মন পড়ার জাদুকর 🧠✨</h3>
+      {/* 2. Back Button added */}
+      <button 
+        onClick={back} 
+        className="text-pink-400 mb-4 flex items-center gap-1 text-xs font-bold hover:underline"
+      >
+        ← আগের ধাপে ফিরে যাও
+      </button>
+
+      <h3 className="text-2xl font-bold text-pink-600 mb-4 font-serif italic">মন পড়ার জাদুকর 🧠✨</h3>
       
       {step === 1 && (
         <div className="animate-fade-in">
-          <p className="text-gray-600 mb-6 text-sm">নিচের যেকোনো একটি ইমোজি মনে মনে শক্ত করে ধরো, কিন্তু একদম ক্লিক করবে না!</p>
+          <p className="text-gray-600 mb-6 text-sm italic">নিচের যেকোনো একটি ইমোজি মনে মনে শক্ত করে ধরো, কিন্তু একদম ক্লিক করবে না!</p>
           <div className="grid grid-cols-3 gap-4 text-4xl mb-8">
             {emojis.map(e => (
               <span key={e} className="p-2 hover:bg-pink-50 rounded-xl transition-all duration-300 cursor-default">
@@ -38,7 +45,7 @@ const MindReader = () => {
           </div>
           <button 
             onClick={() => setStep(2)}
-            className="px-8 py-3 bg-pink-500 text-white rounded-full font-bold shadow-md hover:bg-pink-600 transition-all"
+            className="px-8 py-3 bg-pink-500 text-white rounded-full font-bold shadow-md hover:bg-pink-600 transition-all active:scale-95"
           >
             পছন্দ করেছি! ✅
           </button>
@@ -47,16 +54,16 @@ const MindReader = () => {
 
       {step === 2 && (
         <div className="animate-slide-up space-y-6">
-          <p className="text-gray-600 text-lg">এবার স্ক্রিনে তাকিয়ে ৫ সেকেন্ড আমার কথা ভাবো...</p>
+          <p className="text-gray-600 text-lg italic font-medium">এবার স্ক্রিনে তাকিয়ে ৫ সেকেন্ড আমার কথা ভাবো...</p>
           <div className="flex justify-center">
-            <div className="w-16 h-16 border-4 border-pink-200 border-t-pink-500 rounded-full animate-spin"></div>
+            <div className="w-16 h-16 border-4 border-pink-100 border-t-pink-500 rounded-full animate-spin"></div>
           </div>
-          <p className="text-pink-400 text-xs animate-pulse font-mono tracking-widest text-center">
-             READING_MEMORY_BLOCK_404...
+          <p className="text-pink-400 text-[10px] animate-pulse font-mono tracking-widest uppercase">
+             Syncing_Thoughts... 88%
           </p>
           <button 
             onClick={handleMindRead}
-            className="px-8 py-3 bg-pink-500 text-white rounded-full font-bold"
+            className="px-8 py-3 bg-pink-500 text-white rounded-full font-bold shadow-lg"
           >
             পড়া শেষ? রেজাল্ট দেখো! 🔮
           </button>
@@ -67,7 +74,7 @@ const MindReader = () => {
         <div className="animate-bounce-in">
           <div className="text-5xl mb-4 text-center">😲</div>
           <h4 className="text-xl font-bold text-gray-800 mb-4">ধরা খেয়ে গেলে তো!</h4>
-          <div className="p-6 bg-pink-50 rounded-2xl border-2 border-dashed border-pink-200">
+          <div className="p-6 bg-pink-50 rounded-2xl border-2 border-dashed border-pink-200 shadow-inner">
             <p className="text-pink-700 font-medium italic leading-relaxed">
               "{randomResult}"
             </p>
