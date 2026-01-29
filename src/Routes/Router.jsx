@@ -9,41 +9,43 @@ import { createBrowserRouter } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 
 const Router = createBrowserRouter([
-    {
+  {
+    path: "/",
+    element: <MainLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
         path: "/",
-        element: <MainLayout />,
-        errorElement: <ErrorPage />,
-        children: [
-            {
-                path: "/",
-                element: <Home />
-            },
-            {
-                path: "signin",
-                element: <Signin />
-            },
-            {
-                path: "signUp",
-                element: <Signup />
-            }
-        ]
-    },
-    {
-        path: "/dashboard",
-        element: <PrivateRoute>
-            <DashboardLayout />
-        </PrivateRoute>,
-        errorElement: <ErrorPage />,
-        children: [
-            {
-                path: "overview",
-                element: <Overview />
-            }
-        ]
-    }
-    // {
-    //     path:"/register",
-    //     element:<Register/>
-    // }
-])
+        element: <Home />,
+      },
+    ],
+  },
+  {
+    path: "/dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout />
+      </PrivateRoute>
+    ),
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "overview",
+        element: <Overview />,
+      },
+    ],
+  },
+  // {
+  //     path:"/register",
+  //     element:<Register/>
+  // }
+  {
+    path: "signin",
+    element: <Signin />,
+  },
+  {
+    path: "signUp",
+    element: <Signup />,
+  },
+]);
 export default Router;

@@ -1,13 +1,12 @@
-import './App.css'
-import { Button } from './Components/ui/button'
+import "./App.css";
+import { Button } from "./components/ui/button";
 
 function App() {
-
   return (
     <>
       <Button>Click Me</Button>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

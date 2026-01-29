@@ -1,6 +1,5 @@
-
-import Navbar from "@/Components/Dashboard/Navbar/Navbar";
-import Sidebar from "@/Components/Dashboard/Sidebar/Sidebar";
+import Navbar from "@/components/Dashboard/Navbar/Navbar";
+import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import { Outlet } from "react-router-dom";
 
 export default function DashboardLayout() {
@@ -15,7 +14,7 @@ export default function DashboardLayout() {
       <div className="flex flex-1 flex-col overflow-hidden">
         <Navbar />
         <main className="flex-1 overflow-y-auto p-6 animate-in fade-in duration-300">
-          <Outlet/>
+          <Outlet />
         </main>
       </div>
     </div>
