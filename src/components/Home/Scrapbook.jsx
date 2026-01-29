@@ -1,5 +1,4 @@
 const Scrapbook = ({ back }) => {
-  // Ekhane tumi tomar moner moto aro memory add korte parbe
   const memories = [
     {
       title: "প্রথম দেখা দিনটি...",

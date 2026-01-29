@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 const FriendshipMeter = ({ back }) => {
   const [showResult, setShowResult] = useState(false);
-  // Uttor gulo store korar jonno state
   const [answers, setAnswers] = useState({});
 
   const questions = [
@@ -11,13 +10,11 @@ const FriendshipMeter = ({ back }) => {
     { id: 3, q: "আমি বিপদে পড়লে তুমি কী করবে?", a: "সব ছেড়ে আসবে", b: "ফোন দিবে", c: "পরামর্শ দিবে" },
   ];
 
-  // Answer select korar function
   const handleSelect = (questionId, option) => {
     setAnswers({ ...answers, [questionId]: option });
   };
 
   const handleCalculate = () => {
-    // Check korbe sob answer dewa hoyeche kina
     if (Object.keys(answers).length < questions.length) {
       alert("সবগুলো প্রশ্নের উত্তর দাও আগে! 😊");
       return;
