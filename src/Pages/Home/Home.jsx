@@ -27,7 +27,7 @@ const Home = () => {
   const nextStep = () => setStep(step + 1);
 
   return (
-    <div className="min-h-screen bg-[#FFF5F7] text-gray-800 flex flex-col items-center p-4">
+    <div className="min-h-11/12 bg-[#FFF5F7] text-gray-800 flex flex-col items-center p-4">
       <div className="fixed top-5 right-5 bg-white shadow-md px-4 py-2 rounded-full border border-pink-200 text-pink-600 font-bold text-sm z-50">
         ⏱️ সারপ্রাইজ খুলতে বাকি: {formatTime(timeLeft)}
       </div>
