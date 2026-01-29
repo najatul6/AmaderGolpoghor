@@ -1,64 +1,145 @@
-import React, { useState, useEffect } from 'react';
-import Scrapbook from './components/Scrapbook';
-import JarOfHearts from './components/JarOfHearts';
-import MindReader from './components/MindReader';
-import FriendshipMeter from './components/FriendshipMeter';
+import FriendshipMeter from "@/components/Home/FriendshipMeter";
+import JarOfHearts from "@/components/Home/JarOfHearts";
+import MindReader from "@/components/Home/MindReader";
+import Scrapbook from "@/components/Home/Scrapbook";
+import LoyaltyCheck from "@/components/Home/LoyaltyCheck"; // 1. Eita add korun
+import React, { useState, useEffect } from "react";
 
 const Home = () => {
-  const [activeTab, setActiveTab] = useState('home');
+  // Step logic update: 0: Welcome, 1: Scrapbook, 2: Jar, 3: Mind, 4: Loyalty, 5: Meter, 6: Secret
+  const [step, setStep] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(420);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
+
+  const nextStep = () => setStep(step + 1);
 
   return (
-    <div className="min-h-screen bg-[#fff5f7] text-[#4a4a4a] font-sans">
-      {/* Navigation Bar */}
-      <nav className="p-5 flex justify-between items-center bg-white shadow-sm sticky top-0 z-50">
-        <h1 className="text-2xl font-bold text-pink-600 cursor-pointer" onClick={() => setActiveTab('home')}>
-          আমাদের গল্পঘর
-        </h1>
-        <div className="space-x-4 text-sm font-medium">
-          <button onClick={() => setActiveTab('scrapbook')} className="hover:text-pink-500">স্মৃতিমালা</button>
-          <button onClick={() => setActiveTab('jar')} className="hover:text-pink-500">হৃদয় কলস</button>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-[#FFF5F7] text-gray-800 flex flex-col items-center p-6">
+      <div className="fixed top-5 right-5 bg-white shadow-md px-4 py-2 rounded-full border border-pink-200 text-pink-600 font-bold text-sm z-50">
+        ⏱️ সারপ্রাইজ খুলতে বাকি: {formatTime(timeLeft)}
+      </div>
 
-      {/* Main Content Area */}
-      <main className="max-w-4xl mx-auto p-6">
-        {activeTab === 'home' && (
-          <div className="text-center py-20 animate-fade-in">
-            <h2 className="text-4xl font-bold mb-4">স্বাগতম, আমার প্রিয় বন্ধু! ✨</h2>
-            <p className="mb-10 text-gray-500">আজকের ১০ মিনিট শুধু আমাদের এই ছোট জগতের জন্য।</p>
-            
-            <div className="grid grid-cols-2 gap-4">
-              <div onClick={() => setActiveTab('scrapbook')} className="p-10 bg-white rounded-2xl shadow-md cursor-pointer hover:scale-105 transition-all">
-                <span className="text-4xl">📖</span>
-                <p className="mt-2 font-bold">স্ক্র্যাপবুক</p>
-              </div>
-              <div onClick={() => setActiveTab('reader')} className="p-10 bg-white rounded-2xl shadow-md cursor-pointer hover:scale-105 transition-all">
-                <span className="text-4xl">🧠</span>
-                <p className="mt-2 font-bold">মন পড়ার জাদু</p>
-              </div>
-              <div onClick={() => setActiveTab('jar')} className="p-10 bg-white rounded-2xl shadow-md cursor-pointer hover:scale-105 transition-all">
-                <span className="text-4xl">🏺</span>
-                <p className="mt-2 font-bold">জার অফ হার্টস</p>
-              </div>
-              <div onClick={() => setActiveTab('meter')} className="p-10 bg-white rounded-2xl shadow-md cursor-pointer hover:scale-105 transition-all">
-                <span className="text-4xl">📊</span>
-                <p className="mt-2 font-bold">লয়্যালটি চেক</p>
-              </div>
-            </div>
+      <div className="w-full max-w-2xl mt-12">
+        {step === 0 && (
+          <div className="text-center animate-fade-in space-y-6">
+            <h1 className="text-5xl font-bold text-pink-600 mb-4 font-serif italic">
+              আমাদের গল্পঘর
+            </h1>
+            <p className="text-lg text-gray-600">
+              স্বাগতম বন্ধু! আজ আমরা আমাদের বন্ধুত্বের একটা ছোট ভ্রমণে যাবো।
+              তুমি কি তৈরি?
+            </p>
+            <button
+              onClick={nextStep}
+              className="px-10 py-4 bg-pink-500 text-white rounded-full font-bold shadow-lg hover:bg-pink-600"
+            >
+              চল শুরু করি! 🚀
+            </button>
           </div>
         )}
 
-        {/* Dynamic Components Rendering */}
-        {activeTab === 'scrapbook' && <Scrapbook />}
-        {activeTab === 'jar' && <JarOfHearts />}
-        {activeTab === 'reader' && <MindReader />}
-        {activeTab === 'meter' && <FriendshipMeter />}
-      </main>
+        {step === 1 && (
+          <div className="animate-slide-up">
+            <Scrapbook back={() => setStep(step - 1)} />
+            <button
+              onClick={nextStep}
+              className="w-full mt-6 py-3 bg-pink-400 text-white rounded-xl font-bold"
+            >
+              পরের গল্পে চলো →
+            </button>
+          </div>
+        )}
 
-      {/* 10 Minute Lock Message */}
-      <footer className="text-center py-10 text-xs text-gray-400">
-        <p>পুরো ১০ মিনিট ঘুরলে নিচে একটি স্পেশাল সারপ্রাইজ বক্স আসবে...</p>
-      </footer>
+        {step === 2 && (
+          <div className="animate-slide-up">
+            <JarOfHearts back={() => setStep(step - 1)} />
+            <button
+              onClick={nextStep}
+              className="w-full mt-6 py-3 bg-pink-400 text-white rounded-xl font-bold"
+            >
+              একটু মন পড়ি? →
+            </button>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="animate-slide-up">
+            <MindReader back={() => setStep(step - 1)} />
+            <button
+              onClick={nextStep}
+              className="w-full mt-6 py-3 bg-pink-400 text-white rounded-xl font-bold"
+            >
+              লয়্যালটি চেক করো →
+            </button>
+          </div>
+        )}
+
+        {/* 2. LOYALTY CHECK ADDED HERE */}
+        {step === 4 && (
+          <div className="animate-slide-up">
+            <LoyaltyCheck back={() => setStep(step - 1)} />
+            <button
+              onClick={nextStep}
+              className="w-full mt-6 py-3 bg-pink-400 text-white rounded-xl font-bold"
+            >
+              ফ্রেন্ডশিপ মিটার দেখো →
+            </button>
+          </div>
+        )}
+
+        {step === 5 && (
+          <div className="animate-slide-up">
+            <FriendshipMeter back={() => setStep(step - 1)} />
+            <button
+              onClick={nextStep}
+              className={`w-full mt-6 py-3 rounded-xl font-bold text-white transition-all ${timeLeft === 0 ? "bg-green-500" : "bg-gray-300 cursor-not-allowed"}`}
+              disabled={timeLeft > 0}
+            >
+              {timeLeft === 0
+                ? "শেষ সারপ্রাইজটি দেখো! ✨"
+                : "০৭ মিনিট না হওয়া পর্যন্ত অপেক্ষা করো..."}
+            </button>
+          </div>
+        )}
+
+        {step === 6 && (
+          <div className="animate-bounce-in bg-gradient-to-br from-pink-500 to-rose-600 p-10 rounded-3xl text-white text-center shadow-2xl shadow-pink-200">
+            <h2 className="text-3xl font-bold mb-4">
+              আমাদের বন্ধুত্বের চিঠি 💌
+            </h2>
+            <div className="text-left space-y-4 font-medium italic">
+              <p>"প্রিয় বন্ধু,"</p>
+              <p>
+                "পুরো ০৭ মিনিট এই ইন্টারফেসটাতে সময় দেওয়ার জন্য ধন্যবাদ। এটা
+                শুধু একটা কোড না, এটা তোমার প্রতি আমার কৃতজ্ঞতা।"
+              </p>
+              <p>
+                "তুমি আমার জীবনে না থাকলে দিনগুলো হয়তো এতোটা সুন্দর হতো না।
+                আমাদের এই স্মৃতিগুলো সবসময় এক থাকবে।"
+              </p>
+              <p className="text-right mt-6">- ইতি, তোমার প্রিয় বন্ধু ❤️</p>
+            </div>
+            <button
+              onClick={() => setStep(0)}
+              className="mt-8 text-xs underline opacity-70"
+            >
+              একদম শুরুতে ফিরে যাও
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
