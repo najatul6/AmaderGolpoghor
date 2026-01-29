@@ -22,7 +22,7 @@ const MindReader = ({ back }) => {
   };
 
   return (
-    <div className="p-8 bg-white rounded-3xl shadow-xl border-2 border-pink-200 mt-6 max-w-md mx-auto text-center">
+    <div className="p-4 bg-white rounded-3xl shadow-xl border-2 border-pink-200 mt-6 max-w-md mx-auto text-center">
       {/* 2. Back Button added */}
       <button 
         onClick={back} 

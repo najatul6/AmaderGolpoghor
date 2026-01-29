@@ -4,6 +4,7 @@ import MindReader from "@/components/Home/MindReader";
 import Scrapbook from "@/components/Home/Scrapbook";
 import LoyaltyCheck from "@/components/Home/LoyaltyCheck"; // 1. Eita add korun
 import React, { useState, useEffect } from "react";
+import Typewriter from "@/components/Home/Typewriter";
 
 const Home = () => {
   // Step logic update: 0: Welcome, 1: Scrapbook, 2: Jar, 3: Mind, 4: Loyalty, 5: Meter, 6: Secret
@@ -26,7 +27,7 @@ const Home = () => {
   const nextStep = () => setStep(step + 1);
 
   return (
-    <div className="min-h-screen bg-[#FFF5F7] text-gray-800 flex flex-col items-center p-6">
+    <div className="min-h-screen bg-[#FFF5F7] text-gray-800 flex flex-col items-center p-4">
       <div className="fixed top-5 right-5 bg-white shadow-md px-4 py-2 rounded-full border border-pink-200 text-pink-600 font-bold text-sm z-50">
         ⏱️ সারপ্রাইজ খুলতে বাকি: {formatTime(timeLeft)}
       </div>
@@ -120,10 +121,14 @@ const Home = () => {
               আমাদের বন্ধুত্বের চিঠি 💌
             </h2>
             <div className="text-left space-y-4 font-medium italic">
-              <p>"প্রিয় বন্ধু,"</p>
               <p>
-                "পুরো ০৭ মিনিট এই ইন্টারফেসটাতে সময় দেওয়ার জন্য ধন্যবাদ। এটা
-                শুধু একটা কোড না, এটা তোমার প্রতি আমার কৃতজ্ঞতা।"
+                <Typewriter text="প্রিয় বন্ধু," delay={100} />
+              </p>
+              <p className="leading-relaxed">
+                <Typewriter
+                  text="পুরো ০৭ মিনিট এই ইন্টারফেসটাতে সময় দেওয়ার জন্য ধন্যবাদ। এটা শুধু একটা কোড না, এটা তোমার প্রতি আমার কৃতজ্ঞতা। তুমি আমার জীবনে না থাকলে দিনগুলো হয়তো এতোটা সুন্দর হতো না। আমাদের এই স্মৃতিগুলো সবসময় এক থাকবে।"
+                  delay={40}
+                />
               </p>
               <p>
                 "তুমি আমার জীবনে না থাকলে দিনগুলো হয়তো এতোটা সুন্দর হতো না।

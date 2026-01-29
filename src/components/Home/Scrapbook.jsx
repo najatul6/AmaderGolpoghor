@@ -19,7 +19,7 @@ const Scrapbook = ({ back }) => {
   ];
 
   return (
-    <div className="animate-slide-up bg-[#FFFDF9] p-6 rounded-3xl shadow-xl border-2 border-pink-100">
+    <div className="animate-slide-up bg-[#FFFDF9] p-4 rounded-3xl shadow-xl border-2 border-pink-100">
       {/* Back Button */}
       <button 
         onClick={back} 

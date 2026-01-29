@@ -12,7 +12,7 @@ const JarOfHearts = ({ back }) => {
   ];
 
   return (
-    <div className="animate-slide-up bg-white p-8 rounded-[40px] shadow-2xl border-2 border-pink-50 text-center relative overflow-hidden">
+    <div className="animate-slide-up bg-white p-4 rounded-[40px] shadow-2xl border-2 border-pink-50 text-center relative overflow-hidden">
       {/* Background Decor */}
       <div className="absolute -top-10 -right-10 w-32 h-32 bg-pink-50 rounded-full opacity-50"></div>
       

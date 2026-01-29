@@ -26,7 +26,7 @@ const FriendshipMeter = ({ back }) => {
   };
 
   return (
-    <div className="animate-slide-up bg-white p-8 rounded-3xl shadow-xl border-t-8 border-pink-500 max-w-lg mx-auto">
+    <div className="animate-slide-up bg-white p-4 rounded-3xl shadow-xl border-t-8 border-pink-500 max-w-lg mx-auto">
       <button onClick={back} className="text-pink-400 mb-6 flex items-center gap-1 text-sm font-semibold hover:underline">
         ← হোম পেজে যাও
       </button>
@@ -75,7 +75,7 @@ const FriendshipMeter = ({ back }) => {
       ) : (
         <div className="text-center animate-bounce-in">
           <div className="relative inline-block mb-6">
-            <svg className="w-32 h-32 transform -rotate-90">
+            <svg className="w-36 h-36 transform -rotate-90">
               <circle cx="64" cy="64" r="58" stroke="#fce4ec" strokeWidth="12" fill="none" />
               <circle 
                 cx="64" cy="64" r="58" stroke="#ec4899" strokeWidth="12" fill="none" 

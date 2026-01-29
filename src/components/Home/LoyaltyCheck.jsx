@@ -11,7 +11,7 @@ const LoyaltyCheck = ({ back }) => {
   };
 
   return (
-    <div className="bg-white p-8 rounded-3xl shadow-xl text-center animate-slide-up border-2 border-pink-50">
+    <div className="bg-white p-4 rounded-3xl shadow-xl text-center animate-slide-up border-2 border-pink-50">
       <button 
         onClick={back} 
         className="text-pink-400 mb-6 flex items-center gap-1 text-xs font-bold hover:underline"
