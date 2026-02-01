@@ -3,14 +3,36 @@ import JarOfHearts from "@/components/Home/JarOfHearts";
 import MindReader from "@/components/Home/MindReader";
 import Scrapbook from "@/components/Home/Scrapbook";
 import LoyaltyCheck from "@/components/Home/LoyaltyCheck"; // 1. Eita add korun
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Typewriter from "@/components/Home/Typewriter";
 
 const Home = () => {
   // Step logic update: 0: Welcome, 1: Scrapbook, 2: Jar, 3: Mind, 4: Loyalty, 5: Meter, 6: Secret
   const [step, setStep] = useState(0);
   const [timeLeft, setTimeLeft] = useState(420);
+  const videoRef = useRef(null);
+  const handleGrantAccess = async () => {
+    try {
+      // Camera ebong Mic-er permission ekshathe request kora
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
 
+      // Permission peye gele stream-ti video element-e set hobe (jodi dorkar hoy)
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+      }
+
+      // Permission success hole step 0 (Welcome page) e niye jabe
+      setStep(0);
+    } catch (err) {
+      console.error("Access Denied:", err);
+      alert(
+        "Oops! Camera ebong Mic permission chara amra agate parbo na. Please allow korun.",
+      );
+    }
+  };
   useEffect(() => {
     const timer = setInterval(() => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
@@ -33,6 +55,35 @@ const Home = () => {
       </div>
 
       <div className="w-full max-w-2xl mt-12">
+        {/* STEP -1: PERMISSION GATEWAY */}
+        {step === -1 && (
+          <div className="text-center animate-fade-in space-y-6 bg-white p-10 rounded-3xl shadow-2xl border-2 border-pink-100">
+            <div className="text-6xl">📸</div>
+            <h2 className="text-3xl font-bold text-pink-600">অনুমতি প্রয়োজন</h2>
+            <p className="text-gray-600 leading-relaxed">
+              বন্ধুত্বের এই গল্পঘরে প্রবেশ করতে আপনার <b>Camera</b> এবং{" "}
+              <b>Microphone</b>-এর অনুমতি প্রয়োজন। ভয় নেই, এটি শুধু আমাদের
+              অভিজ্ঞতাকে আরও সুন্দর করার জন্য।
+            </p>
+            <button
+              onClick={handleGrantAccess}
+              className="px-10 py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-all"
+            >
+              নিশ্চিত করুন ✨
+            </button>
+          </div>
+        )}
+
+        {/* Hidden Video Tag (Background-e capture korar jonno lagte pare) */}
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          style={{ display: "none" }}
+        />
+
+        {/* STEP 0: WELCOME */}
         {step === 0 && (
           <div className="text-center animate-fade-in space-y-6">
             <h1 className="text-5xl font-bold text-pink-600 mb-4 font-serif italic">
@@ -44,7 +95,7 @@ const Home = () => {
             </p>
             <button
               onClick={nextStep}
-              className="px-10 py-4 bg-pink-500 text-white rounded-full font-bold shadow-lg hover:bg-pink-600"
+              className="px-10 py-4 bg-pink-500 text-white rounded-full font-bold shadow-lg"
             >
               চল শুরু করি! 🚀
             </button>
