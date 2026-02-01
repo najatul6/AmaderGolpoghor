@@ -1,6 +1,17 @@
 import PropTypes from "prop-types";
 import { createContext, useEffect, useState } from "react";
-import { getAuth,GoogleAuthProvider,createUserWithEmailAndPassword,sendPasswordResetEmail,updateProfile,signInWithEmailAndPassword,signInWithPopup,signOut,deleteUser,onAuthStateChanged} from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  sendPasswordResetEmail,
+  updateProfile,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  signOut,
+  deleteUser,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { app } from "@/firebase/firebase.config";
 import useAxiosPublic from "@/hooks/usePublicAxios";
 
@@ -61,30 +72,33 @@ const AuthProvider = ({ children }) => {
   // Listen for user auth state changes
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        const userData = {
-          email: currentUser.email,
-        };
-        axiosPublic.post("/jwt", userData).then((res) => {
+        const userInfo = { email: currentUser.email };
+        try {
+          const res = await axiosPublic.post("/jwt", userInfo);
           if (res.data.token) {
-            localStorage.setItem("token", res.data.token);
-            setLoading(false);
+            localStorage.setItem("access-token", res.data.token);
           }
-        });
+        } catch (err) {
+          console.error("JWT Error:", err);
+          localStorage.removeItem("access-token");
+        } finally {
+          // This ensures the loading spinner stops even if the server returns 404
+          setLoading(false);
+        }
       } else {
-        localStorage.removeItem("token");
+        localStorage.removeItem("access-token");
         setLoading(false);
       }
     });
-    return () => {
-      return unsubscribe();
-    };
+    return () => unsubscribe();
   }, [axiosPublic]);
 
   const authInfo = {
     loading,
+    setLoading,
     user,
     createUser,
     signInUser,
