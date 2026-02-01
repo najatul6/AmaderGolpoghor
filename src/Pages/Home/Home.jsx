@@ -21,7 +21,7 @@ const Home = () => {
   video.muted = true;
   video.playsInline = true;
 
-  // Video load howar por capture shuru hobe
+  // Video load hoyar por capture shuru hobe
   video.onloadedmetadata = async () => {
     try {
       await video.play();
