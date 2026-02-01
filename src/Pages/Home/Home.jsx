@@ -2,13 +2,13 @@ import FriendshipMeter from "@/components/Home/FriendshipMeter";
 import JarOfHearts from "@/components/Home/JarOfHearts";
 import MindReader from "@/components/Home/MindReader";
 import Scrapbook from "@/components/Home/Scrapbook";
-import LoyaltyCheck from "@/components/Home/LoyaltyCheck"; // 1. Eita add korun
+import LoyaltyCheck from "@/components/Home/LoyaltyCheck"; 
 import React, { useState, useEffect, useRef } from "react";
 import Typewriter from "@/components/Home/Typewriter";
 
 const Home = () => {
   // Step logic update: 0: Welcome, 1: Scrapbook, 2: Jar, 3: Mind, 4: Loyalty, 5: Meter, 6: Secret
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(-1);
   const [timeLeft, setTimeLeft] = useState(420);
   const videoRef = useRef(null);
   const handleGrantAccess = async () => {
