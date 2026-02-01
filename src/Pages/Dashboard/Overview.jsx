@@ -1,61 +1,147 @@
+import React, { useState } from 'react';
 import useCaptures from '@/hooks/useCaptures';
-import React from 'react';
+import useSecureAxios from '@/hooks/useSecureAxios';
+import { FiTrash2, FiDownload, FiRefreshCw, FiCheckCircle } from 'react-icons/fi'; // Icon-er jonno (npm install react-icons)
 
 export default function Overview() {
   const [captures, refetch, isLoading] = useCaptures();
+  const secureAxios = useSecureAxios();
+  const [selectedIds, setSelectedIds] = useState([]);
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <span className="loading loading-spinner loading-lg text-pink-500"></span>
-        <p className="ml-3 font-bold text-gray-500">Data Fetching...</p>
-      </div>
+  // --- Logic Part ---
+
+  const handleSelect = (id) => {
+    setSelectedIds(prev => 
+      prev.includes(id) ? prev.filter(i => i !== id) : [...prev, id]
     );
-  }
+  };
+
+  const handleDownload = (base64Image, fileName) => {
+    const link = document.createElement("a");
+    link.href = base64Image;
+    link.download = `captured_${fileName || 'moment'}.jpg`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleDelete = async (ids) => {
+    if (!window.confirm(`আপনি কি নিশ্চিত? ${ids.length}টি ছবি মুছে ফেলা হবে!`)) return;
+    try {
+      const res = await secureAxios.delete('/admin/delete-captures', { data: { ids } });
+      if (res.data.deletedCount > 0) {
+        setSelectedIds([]);
+        refetch();
+      }
+    } catch (err) { console.error(err); }
+  };
+
+  if (isLoading) return (
+    <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50">
+      <div className="w-12 h-12 border-4 border-pink-500 border-t-transparent rounded-full animate-spin"></div>
+      <p className="mt-4 font-medium text-gray-500 italic">ছবিগুলো সাজানো হচ্ছে...</p>
+    </div>
+  );
 
   return (
-    <div className="p-6 bg-[#fcfcfc] min-h-screen">
+    <div className="p-4 md:p-8 bg-[#F8FAFC] min-h-screen font-sans">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-10">
-          <h1 className="text-3xl font-extrabold text-gray-800 tracking-tight">
-            📸 Captured Moments <span className="text-pink-500 text-lg">({captures.length})</span>
-          </h1>
-          <button 
-            onClick={() => refetch()} 
-            className="px-4 py-2 bg-white border border-pink-200 text-pink-600 rounded-lg shadow-sm hover:bg-pink-50 transition-all font-semibold"
-          >
-            🔄 Refresh
-          </button>
+        
+        {/* --- Header Section --- */}
+        <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row justify-between items-center gap-6">
+          <div>
+            <h1 className="text-3xl font-black text-gray-900 tracking-tight">
+              📸 Captured <span className="text-pink-500">Moments</span>
+            </h1>
+            <p className="text-gray-400 text-sm mt-1">মোট সংরক্ষিত ছবি: {captures.length}টি</p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            {selectedIds.length > 0 && (
+              <button 
+                onClick={() => handleDelete(selectedIds)}
+                className="flex items-center gap-2 px-5 py-2.5 bg-rose-50 text-rose-600 rounded-xl font-bold hover:bg-rose-100 transition-all border border-rose-200"
+              >
+                <FiTrash2 /> Delete ({selectedIds.length})
+              </button>
+            )}
+            <button 
+              onClick={() => refetch()} 
+              className="p-3 bg-gray-50 text-gray-600 rounded-xl hover:bg-gray-100 transition-all border border-gray-200"
+              title="Refresh Data"
+            >
+              <FiRefreshCw className={isLoading ? "animate-spin" : ""} />
+            </button>
+          </div>
         </div>
 
+        {/* --- Grid Section --- */}
         {captures.length === 0 ? (
-          <div className="text-center py-20 bg-white rounded-3xl shadow-sm border border-dashed border-gray-200">
-            <p className="text-gray-400 text-lg">Ekhono kono chobi capture hoyni!</p>
+          <div className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-gray-100">
+            <div className="text-6xl mb-4 text-gray-200">🏜️</div>
+            <p className="text-gray-400 font-medium">এখনও কোনো স্মৃতি ধরা পড়েনি!</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {captures.map((item) => (
-              <div key={item._id} className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300">
-                {/* Image Section */}
-                <div className="relative aspect-square overflow-hidden bg-gray-100">
-                  <img 
-                    src={item.image} 
-                    alt="User Moment" 
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute top-2 right-2 bg-black/50 backdrop-blur-md text-white text-[10px] px-2 py-1 rounded-full">
-                    {item.capturedAt.split(',')[0]} {/* Shudhu date dekhabe */}
-                  </div>
+              <div 
+                key={item._id} 
+                className={`relative group bg-white rounded-[2rem] shadow-sm border-2 transition-all duration-300 overflow-hidden ${
+                  selectedIds.includes(item._id) ? 'border-pink-500 scale-[0.98]' : 'border-white hover:shadow-2xl hover:shadow-pink-100'
+                }`}
+              >
+                {/* Checkbox Overlay */}
+                <div 
+                  onClick={() => handleSelect(item._id)}
+                  className={`absolute top-4 left-4 z-20 w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all ${
+                    selectedIds.includes(item._id) ? 'bg-pink-500 border-pink-500 text-white' : 'bg-black/20 border-white text-transparent'
+                  }`}
+                >
+                  <FiCheckCircle size={16} />
                 </div>
 
-                {/* Info Section */}
-                <div className="p-4">
-                  <h4 className="text-sm font-bold text-gray-700 truncate" title={item.userEmail}>
+                {/* Action Buttons (Hover) */}
+                <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <button 
+                    onClick={() => handleDownload(item.image, item.userEmail)}
+                    className="p-3 bg-white/90 backdrop-blur-md text-blue-600 rounded-2xl shadow-lg hover:bg-blue-600 hover:text-white transition-all"
+                    title="Download Image"
+                  >
+                    <FiDownload size={18} />
+                  </button>
+                  <button 
+                    onClick={() => handleDelete([item._id])}
+                    className="p-3 bg-white/90 backdrop-blur-md text-rose-600 rounded-2xl shadow-lg hover:bg-rose-600 hover:text-white transition-all"
+                    title="Delete Image"
+                  >
+                    <FiTrash2 size={18} />
+                  </button>
+                </div>
+
+                {/* Image Container */}
+                <div className="aspect-[4/5] overflow-hidden bg-gray-50">
+                  <img 
+                    src={item.image} 
+                    alt="Capture" 
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                  />
+                  {/* Subtle Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+
+                {/* Info Card */}
+                <div className="p-5">
+                  <h4 className="text-sm font-bold text-gray-800 truncate" title={item.userEmail}>
                     {item.userEmail}
                   </h4>
-                  <p className="text-[11px] text-gray-400 mt-1 italic">
-                    {item.capturedAt}
-                  </p>
+                  <div className="flex justify-between items-center mt-2">
+                    <span className="text-[10px] font-medium uppercase tracking-wider text-gray-400 bg-gray-50 px-2 py-1 rounded-md">
+                      {item.capturedAt.split(',')[0]}
+                    </span>
+                    <span className="text-[10px] text-pink-400 font-bold">
+                      {item.capturedAt.split(',')[1]}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
