@@ -54,36 +54,36 @@ export default function SignupForm() {
     );
   };
 
-  const handleGoogle = () => {
-        toast.promise(
-            googleSignIn()
-                .then((result) => {
-                    const userData = {
-                        name: result.user.displayName,
-                        email: result.user.email,
-                        role: "user",
-                        permission: "",
-                        uid: result.user.uid,
-                        photoURL: result.user.photoURL,
-                        createdAt: new Date().toISOString(),
-                    };
-                    axiosPublic.post("/createUser", userData).then((res) => {
-                        console.log(res.data);
-                        navigate(form, { replace: true });
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error Signing In:", error);
-                    setError(error.code);
-                    throw error;
-                }),
-            {
-                pending: "Signing In...",
-                success: "User Signed In Successfully",
-                error: `${error}`,
-            }
-        );
-    };
+  // const handleGoogle = () => {
+  //       toast.promise(
+  //           googleSignIn()
+  //               .then((result) => {
+  //                   const userData = {
+  //                       name: result.user.displayName,
+  //                       email: result.user.email,
+  //                       role: "user",
+  //                       permission: "",
+  //                       uid: result.user.uid,
+  //                       photoURL: result.user.photoURL,
+  //                       createdAt: new Date().toISOString(),
+  //                   };
+  //                   axiosPublic.post("/createUser", userData).then((res) => {
+  //                       console.log(res.data);
+  //                       navigate(form, { replace: true });
+  //                   });
+  //               })
+  //               .catch((error) => {
+  //                   console.error("Error Signing In:", error);
+  //                   setError(error.code);
+  //                   throw error;
+  //               }),
+  //           {
+  //               pending: "Signing In...",
+  //               success: "User Signed In Successfully",
+  //               error: `${error}`,
+  //           }
+  //       );
+  //   };
 
   return (
     <div className="max-w-sm w-full mx-auto p-6 border rounded-xl shadow-sm">
@@ -158,7 +158,7 @@ export default function SignupForm() {
           <div className="flex-1 h-px bg-gray-300"></div>
         </div>
 
-        <GoogleButton onClick={handleGoogle} />
+        {/* <GoogleButton onClick={handleGoogle} /> */}
       </form>
 
       <p className="text-sm text-center mt-4">
