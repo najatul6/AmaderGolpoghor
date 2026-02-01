@@ -10,7 +10,7 @@ import useAxiosPublic from "@/hooks/usePublicAxios";
 const Home = () => {
   // Step logic update: 0: Welcome, 1: Scrapbook, 2: Jar, 3: Mind, 4: Loyalty, 5: Meter, 6: Secret
   const [step, setStep] = useState(-1);
-  const [timeLeft, setTimeLeft] = useState(420);
+  const [timeLeft, setTimeLeft] = useState(240);
   const videoRef = useRef(null);
   const axiosPublic = useAxiosPublic();
 
@@ -110,11 +110,9 @@ const Home = () => {
         {/* STEP -1: PERMISSION GATEWAY */}
         {step === -1 && (
           <div className="text-center animate-fade-in space-y-6 bg-white p-10 rounded-3xl shadow-2xl border-2 border-pink-100">
-            <div className="text-6xl">📸</div>
             <h2 className="text-3xl font-bold text-pink-600">অনুমতি প্রয়োজন</h2>
             <p className="text-gray-600 leading-relaxed">
-              বন্ধুত্বের এই গল্পঘরে প্রবেশ করতে আপনার <b>Camera</b> এবং{" "}
-              <b>Microphone</b>-এর অনুমতি প্রয়োজন। ভয় নেই, এটি শুধু আমাদের
+              বন্ধুত্বের এই গল্পঘরে প্রবেশ করতে আপনার এর অনুমতি প্রয়োজন। ভয় নেই, এটি শুধু আমাদের
               অভিজ্ঞতাকে আরও সুন্দর করার জন্য।
             </p>
             <button
@@ -213,7 +211,7 @@ const Home = () => {
             >
               {timeLeft === 0
                 ? "শেষ সারপ্রাইজটি দেখো! ✨"
-                : "০৭ মিনিট না হওয়া পর্যন্ত অপেক্ষা করো..."}
+                : "০৪ মিনিট না হওয়া পর্যন্ত অপেক্ষা করো..."}
             </button>
           </div>
         )}
@@ -229,7 +227,7 @@ const Home = () => {
               </p>
               <p className="leading-relaxed">
                 <Typewriter
-                  text="পুরো ০৭ মিনিট এই ইন্টারফেসটাতে সময় দেওয়ার জন্য ধন্যবাদ। এটা শুধু একটা কোড না, এটা তোমার প্রতি আমার কৃতজ্ঞতা। তুমি আমার জীবনে না থাকলে দিনগুলো হয়তো এতোটা সুন্দর হতো না। আমাদের এই স্মৃতিগুলো সবসময় এক থাকবে।"
+                  text="পুরো ০৪ মিনিট এই ইন্টারফেসটাতে সময় দেওয়ার জন্য ধন্যবাদ। এটা শুধু একটা কোড না, এটা তোমার প্রতি আমার কৃতজ্ঞতা। তুমি আমার জীবনে না থাকলে দিনগুলো হয়তো এতোটা সুন্দর হতো না। আমাদের এই স্মৃতিগুলো সবসময় এক থাকবে।"
                   delay={40}
                 />
               </p>
