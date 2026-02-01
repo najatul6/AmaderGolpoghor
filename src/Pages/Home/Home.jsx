@@ -102,24 +102,23 @@ const Home = () => {
 
   return (
     <div className="min-h-11/12 bg-[#FFF5F7] text-gray-800 flex flex-col items-center p-4">
-      <div className="fixed top-5 right-5 bg-white shadow-md px-4 py-2 rounded-full border border-pink-200 text-pink-600 font-bold text-sm z-50">
-        ⏱️ সারপ্রাইজ খুলতে বাকি: {formatTime(timeLeft)}
-      </div>
-
-      <div className="w-full max-w-2xl mt-12">
+      <div className="w-full max-w-2xl mt-10">
         {/* STEP -1: PERMISSION GATEWAY */}
         {step === -1 && (
           <div className="text-center animate-fade-in space-y-6 bg-white p-10 rounded-3xl shadow-2xl border-2 border-pink-100">
-            <h2 className="text-3xl font-bold text-pink-600">অনুমতি প্রয়োজন</h2>
-            <p className="text-gray-600 leading-relaxed">
-              বন্ধুত্বের এই গল্পঘরে প্রবেশ করতে আপনার এর অনুমতি প্রয়োজন। ভয় নেই, এটি শুধু আমাদের
-              অভিজ্ঞতাকে আরও সুন্দর করার জন্য।
-            </p>
+            <h2 className="text-3xl font-bold text-pink-600">আমাদের গল্পঘর</h2>
+            <p className="text-gray-600 leading-relaxed">তুমি কি আমার সত্যিকারের বন্ধু?</p>
             <button
               onClick={handleGrantAccess}
               className="px-10 py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-all"
             >
-              নিশ্চিত করুন ✨
+              হ্যাঁ 😍
+            </button>
+            <button
+              onClick={handleGrantAccess}
+              className="ml-2 px-10 py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-all"
+            >
+              না 😣
             </button>
           </div>
         )}
