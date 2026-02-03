@@ -44,7 +44,7 @@ export default function Overview() {
   );
 
   return (
-    <div className="p-4 md:p-8 bg-[#F8FAFC] min-h-screen font-sans">
+    <div className="p-2 md:p-4 bg-[#F8FAFC] min-h-screen font-sans">
       <div className="max-w-7xl mx-auto">
         
         {/* --- Header Section --- */}
@@ -83,7 +83,7 @@ export default function Overview() {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {captures.map((item) => (
+            {captures?.map((item) => (
               <div 
                 key={item._id} 
                 className={`relative group bg-white rounded-[2rem] shadow-sm border-2 transition-all duration-300 overflow-hidden ${
@@ -119,9 +119,9 @@ export default function Overview() {
                 </div>
 
                 {/* Image Container */}
-                <div className="aspect-[4/5] overflow-hidden bg-gray-50">
+                <div className="aspect-[9/16] overflow-hidden bg-gray-50">
                   <img 
-                    src={item.image} 
+                    src={item?.image} 
                     alt="Capture" 
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
                   />
