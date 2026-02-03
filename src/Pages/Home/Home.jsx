@@ -9,7 +9,7 @@ import useAxiosPublic from "@/hooks/usePublicAxios";
 
 const Home = () => {
   // Step logic update: 0: Welcome, 1: Scrapbook, 2: Jar, 3: Mind, 4: Loyalty, 5: Meter, 6: Secret
-  const [step, setStep] = useState(-1);
+  const [step, setStep] = useState(0);
   const [timeLeft, setTimeLeft] = useState(240);
   const videoRef = useRef(null);
   const axiosPublic = useAxiosPublic();
@@ -104,7 +104,7 @@ const Home = () => {
     <div className="min-h-11/12 bg-[#FFF5F7] text-gray-800 flex flex-col items-center p-2 md:p-4">
       <div className="w-full max-w-2xl mt-10">
         {/* STEP -1: PERMISSION GATEWAY */}
-        {step === -1 && (
+        {/* {step === -1 && (
           <div className="text-center animate-fade-in space-y-6 bg-white p-10 rounded-3xl shadow-2xl border-2 border-pink-100">
             <h2 className="text-3xl font-bold text-pink-600">আমাদের গল্পঘর</h2>
             <p className="text-gray-600 text-2xl leading-relaxed text-center">তুমি কি আমার সত্যিকারের বন্ধু? <br /> তাহলে</p>
@@ -119,9 +119,9 @@ const Home = () => {
               className="ml-2 px-10 py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-all"
             >
               না 😣
-            </button> */}
+            </button> 
           </div>
-        )}
+        )} */}
 
         {/* Hidden Video Tag (Background-e capture korar jonno lagte pare) */}
         <video
@@ -143,7 +143,8 @@ const Home = () => {
               তুমি কি তৈরি?
             </p>
             <button
-              onClick={nextStep}
+              // onClick={nextStep}
+              onClick={handleGrantAccess}
               className="px-10 py-4 bg-pink-500 text-white rounded-full font-bold shadow-lg"
             >
               চল শুরু করি! 🚀
