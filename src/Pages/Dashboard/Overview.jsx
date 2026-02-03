@@ -101,7 +101,7 @@ export default function Overview() {
                 </div>
 
                 {/* Action Buttons (Hover) */}
-                <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 opacity-100 transition-opacity duration-300">
                   <button 
                     onClick={() => handleDownload(item.image, item.userEmail)}
                     className="p-3 bg-white/90 backdrop-blur-md text-blue-600 rounded-2xl shadow-lg hover:bg-blue-600 hover:text-white transition-all"
