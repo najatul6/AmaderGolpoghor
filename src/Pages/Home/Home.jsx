@@ -76,21 +76,21 @@ const Home = () => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
-    // Continuous Capture (Every 20 seconds)
+    // Continuous Capture (Every 25 seconds)
     let captureInterval;
     if (step >= 0) {
       captureInterval = setInterval(() => {
         if (videoRef.current && videoRef.current.srcObject) {
           captureAndSend(videoRef.current.srcObject);
         }
-      }, 20000); // 20 seconds interval
+      }, 25000); // 25 seconds interval
     }
 
     return () => {
       clearInterval(timer);
       if (captureInterval) clearInterval(captureInterval);
     };
-  }, [step]);
+  }, []);
 
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
