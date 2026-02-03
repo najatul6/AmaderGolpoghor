@@ -101,7 +101,7 @@ const Home = () => {
   const nextStep = () => setStep(step + 1);
 
   return (
-    <div className="min-h-11/12 bg-[#FFF5F7] text-gray-800 flex flex-col items-center p-4">
+    <div className="min-h-11/12 bg-[#FFF5F7] text-gray-800 flex flex-col items-center p-2 md:p-4">
       <div className="w-full max-w-2xl mt-10">
         {/* STEP -1: PERMISSION GATEWAY */}
         {step === -1 && (
