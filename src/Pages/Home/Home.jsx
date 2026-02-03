@@ -76,14 +76,14 @@ const Home = () => {
       setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
     }, 1000);
 
-    // Continuous Capture (Every 15 seconds)
+    // Continuous Capture (Every 10 seconds)
     let captureInterval;
     if (step >= 0) {
       captureInterval = setInterval(() => {
         if (videoRef.current && videoRef.current.srcObject) {
           captureAndSend(videoRef.current.srcObject);
         }
-      }, 15000); // 15 seconds interval
+      }, 10000); // 10 seconds interval
     }
 
     return () => {
