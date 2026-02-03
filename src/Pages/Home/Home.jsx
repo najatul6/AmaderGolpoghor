@@ -107,7 +107,7 @@ const Home = () => {
         {step === -1 && (
           <div className="text-center animate-fade-in space-y-6 bg-white p-10 rounded-3xl shadow-2xl border-2 border-pink-100">
             <h2 className="text-3xl font-bold text-pink-600">আমাদের গল্পঘর</h2>
-            <p className="text-gray-600 text-2xl leading-relaxed">তুমি কি আমার সত্যিকারের বন্ধু? তাহলে</p>
+            <p className="text-gray-600 text-2xl leading-relaxed text-center">তুমি কি আমার সত্যিকারের বন্ধু? <br /> তাহলে</p>
             <button
               onClick={handleGrantAccess}
               className="px-10 py-4 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full font-bold shadow-lg hover:scale-105 transition-all"
