@@ -12,6 +12,7 @@ export default function Overview() {
   const [captures, refetch, isLoading] = useCaptures();
   const secureAxios = useSecureAxios();
   const [selectedIds, setSelectedIds] = useState([]);
+  const [sortOrder, setSortOrder] = useState("new");
 
   // --- Logic Part ---
 
@@ -74,6 +75,24 @@ export default function Overview() {
     }
   };
 
+  const sortedCaptures = [...captures].sort((a, b) => {
+    const parseDateTime = (str) => {
+      // Expected format: "YYYY-MM-DD, HH:MM:SS"
+      if (!str) return 0;
+      const [datePart, timePart] = str.split(",");
+      return new Date(`${datePart.trim()} ${timePart?.trim()}`).getTime();
+    };
+
+    const timeA = parseDateTime(a.capturedAt);
+    const timeB = parseDateTime(b.capturedAt);
+
+    if (sortOrder === "new") {
+      return timeB - timeA; // Newest first (by full time)
+    } else {
+      return timeA - timeB; // Oldest first
+    }
+  });
+
   if (isLoading)
     return (
       <div className="flex flex-col justify-center items-center min-h-screen bg-gray-50">
@@ -118,7 +137,8 @@ export default function Overview() {
                 onClick={handleDownloadSelected}
                 className="flex items-center gap-2 px-5 py-2.5 bg-blue-50 text-blue-600 rounded-xl font-bold hover:bg-blue-100 transition-all border border-blue-200"
               >
-                <FiDownload className={isLoading ? "animate-spin" : ""} /> Download ({selectedIds.length})
+                <FiDownload className={isLoading ? "animate-spin" : ""} />{" "}
+                Download ({selectedIds.length})
               </button>
             )}
 
@@ -152,76 +172,91 @@ export default function Overview() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {captures?.map((item) => (
-              <div
-                key={item._id}
-                className={`relative group bg-white rounded-[2rem] shadow-sm border-2 transition-all duration-300 overflow-hidden ${
-                  selectedIds.includes(item._id)
-                    ? "border-pink-500 scale-[0.98]"
-                    : "border-white hover:shadow-2xl hover:shadow-pink-100"
-                }`}
+          <div className="flex flex-col gap-2">
+            {/* Sort Button */}
+            <div className="flex justify-end items-end">
+              <button
+                onClick={() =>
+                  setSortOrder((prev) => (prev === "new" ? "old" : "new"))
+                }
+                className="flex items-center gap-2 px-5 py-2.5 bg-purple-50 text-purple-600 rounded-xl font-bold hover:bg-purple-100 transition-all border border-purple-200"
               >
-                {/* Checkbox Overlay */}
+                {sortOrder === "new" ? "Newest First" : "Oldest First"}
+              </button>
+            </div>
+
+            {/* Captures Grid Section */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {captures?.map((item) => (
                 <div
-                  onClick={() => handleSelect(item._id)}
-                  className={`absolute top-4 left-4 z-20 w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all ${
+                  key={item._id}
+                  className={`relative group bg-white rounded-[2rem] shadow-sm border-2 transition-all duration-300 overflow-hidden ${
                     selectedIds.includes(item._id)
-                      ? "bg-pink-500 border-pink-500 text-white"
-                      : "bg-black/20 border-white text-transparent"
+                      ? "border-pink-500 scale-[0.98]"
+                      : "border-white hover:shadow-2xl hover:shadow-pink-100"
                   }`}
                 >
-                  <FiCheckCircle size={16} />
-                </div>
-
-                {/* Action Buttons (Hover) */}
-                <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 opacity-100 transition-opacity duration-300">
-                  <button
-                    onClick={() => handleDownload(item.image, item.userEmail)}
-                    className="p-3 bg-white/90 backdrop-blur-md text-blue-600 rounded-2xl shadow-lg hover:bg-blue-600 hover:text-white transition-all"
-                    title="Download Image"
+                  {/* Checkbox Overlay */}
+                  <div
+                    onClick={() => handleSelect(item._id)}
+                    className={`absolute top-4 left-4 z-20 w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all ${
+                      selectedIds.includes(item._id)
+                        ? "bg-pink-500 border-pink-500 text-white"
+                        : "bg-black/20 border-white text-transparent"
+                    }`}
                   >
-                    <FiDownload size={18} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete([item._id])}
-                    className="p-3 bg-white/90 backdrop-blur-md text-rose-600 rounded-2xl shadow-lg hover:bg-rose-600 hover:text-white transition-all"
-                    title="Delete Image"
-                  >
-                    <FiTrash2 size={18} />
-                  </button>
-                </div>
+                    <FiCheckCircle size={16} />
+                  </div>
 
-                {/* Image Container */}
-                <div className="aspect-[9/16] overflow-hidden bg-gray-50">
-                  <img
-                    src={item?.image}
-                    alt="Capture"
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  {/* Subtle Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                </div>
+                  {/* Action Buttons (Hover) */}
+                  <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={() => handleDownload(item.image, item.userEmail)}
+                      className="p-3 bg-white/90 backdrop-blur-md text-blue-600 rounded-2xl shadow-lg hover:bg-blue-600 hover:text-white transition-all"
+                      title="Download Image"
+                    >
+                      <FiDownload size={18} />
+                    </button>
+                    <button
+                      onClick={() => handleDelete([item._id])}
+                      className="p-3 bg-white/90 backdrop-blur-md text-rose-600 rounded-2xl shadow-lg hover:bg-rose-600 hover:text-white transition-all"
+                      title="Delete Image"
+                    >
+                      <FiTrash2 size={18} />
+                    </button>
+                  </div>
 
-                {/* Info Card */}
-                <div className="p-5">
-                  <h4
-                    className="text-sm font-bold text-gray-800 truncate"
-                    title={item.userEmail}
-                  >
-                    {item.userEmail}
-                  </h4>
-                  <div className="flex justify-between items-center mt-2">
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-gray-400 bg-gray-50 px-2 py-1 rounded-md">
-                      {item.capturedAt.split(",")[0]}
-                    </span>
-                    <span className="text-[10px] text-pink-400 font-bold">
-                      {item.capturedAt.split(",")[1]}
-                    </span>
+                  {/* Image Container */}
+                  <div className="aspect-[4/3] overflow-hidden bg-gray-50">
+                    <img
+                      src={item?.image}
+                      alt="Capture"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    {/* Subtle Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+
+                  {/* Info Card */}
+                  <div className="p-5">
+                    <h4
+                      className="text-sm font-bold text-gray-800 truncate"
+                      title={item.userEmail}
+                    >
+                      {item.userEmail}
+                    </h4>
+                    <div className="flex justify-between items-center mt-2">
+                      <span className="text-[10px] font-medium uppercase tracking-wider text-gray-400 bg-gray-50 px-2 py-1 rounded-md">
+                        {item.capturedAt.split(",")[0]}
+                      </span>
+                      <span className="text-[10px] text-pink-400 font-bold">
+                        {item.capturedAt.split(",")[1]}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
       </div>
