@@ -7,12 +7,14 @@ import {
   FiRefreshCw,
   FiCheckCircle,
 } from "react-icons/fi"; // Icon-er jonno (npm install react-icons)
+import { toast } from "react-toastify";
 
 export default function Overview() {
   const [captures, refetch, isLoading] = useCaptures();
   const secureAxios = useSecureAxios();
   const [selectedIds, setSelectedIds] = useState([]);
   const [sortOrder, setSortOrder] = useState("new");
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // --- Logic Part ---
 
@@ -59,25 +61,74 @@ export default function Overview() {
     });
   };
 
-  const handleDelete = async (ids) => {
-    if (!window.confirm(`আপনি কি নিশ্চিত? ${ids.length}টি ছবি মুছে ফেলা হবে!`))
-      return;
+  const confirmDelete = (ids) => {
+    toast(
+      ({ closeToast }) => (
+        <div className="flex flex-col gap-3">
+          <p className="font-semibold text-gray-800">
+            আপনি কি নিশ্চিত? {ids.length}টি ছবি মুছে ফেলা হবে! ⚠️
+          </p>
+          <div className="flex justify-end gap-2">
+            <button
+              onClick={closeToast}
+              className="px-3 py-1.5 rounded-md bg-gray-200 text-gray-700 hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                closeToast();
+                handleDeleteConfirmed(ids);
+              }}
+              className="px-3 py-1.5 rounded-md bg-rose-600 text-white hover:bg-rose-700"
+            >
+              Yes, Delete
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        closeOnClick: false,
+        closeButton: false,
+        autoClose: false,
+      },
+    );
+  };
+
+  const handleDeleteConfirmed = async (ids) => {
     try {
+      const toastId = toast.loading("ডিলিট করা হচ্ছে... ⏳");
+
       const res = await secureAxios.delete("/admin/delete-captures", {
         data: { ids },
       });
+
       if (res.data.deletedCount > 0) {
         setSelectedIds([]);
         refetch();
+
+        toast.update(toastId, {
+          render: "✅ সফলভাবে ডিলিট হয়েছে!",
+          type: "success",
+          isLoading: false,
+          autoClose: 2000,
+        });
+      } else {
+        toast.update(toastId, {
+          render: "⚠️ কিছুই ডিলিট হয়নি!",
+          type: "warning",
+          isLoading: false,
+          autoClose: 2000,
+        });
       }
     } catch (err) {
       console.error(err);
+      toast.error("❌ ডিলিট করতে সমস্যা হয়েছে!");
     }
   };
 
   const sortedCaptures = [...captures].sort((a, b) => {
     const parseDateTime = (str) => {
-      // Expected format: "YYYY-MM-DD, HH:MM:SS"
       if (!str) return 0;
       const [datePart, timePart] = str.split(",");
       return new Date(`${datePart.trim()} ${timePart?.trim()}`).getTime();
@@ -87,9 +138,9 @@ export default function Overview() {
     const timeB = parseDateTime(b.capturedAt);
 
     if (sortOrder === "new") {
-      return timeB - timeA; // Newest first (by full time)
+      return timeB - timeA;
     } else {
-      return timeA - timeB; // Oldest first
+      return timeA - timeB;
     }
   });
 
@@ -145,7 +196,7 @@ export default function Overview() {
             {/* Delete Button */}
             {selectedIds.length > 0 && (
               <button
-                onClick={() => handleDelete(selectedIds)}
+                onClick={() => confirmDelete(selectedIds)}
                 className="flex items-center gap-2 px-5 py-2.5 bg-rose-50 text-rose-600 rounded-xl font-bold hover:bg-rose-100 transition-all border border-rose-200"
               >
                 <FiTrash2 /> Delete ({selectedIds.length})
@@ -154,11 +205,18 @@ export default function Overview() {
 
             {/* Refresh Button */}
             <button
-              onClick={() => refetch()}
+              onClick={async () => {
+                setIsRefreshing(true);
+                await Promise.all([
+                  refetch(),
+                  new Promise((res) => setTimeout(res, 600)),
+                ]);
+                setIsRefreshing(false);
+              }}
               className="p-3 bg-gray-50 text-gray-600 rounded-xl hover:bg-gray-100 transition-all border border-gray-200"
               title="Refresh Data"
             >
-              <FiRefreshCw className={isLoading ? "animate-spin" : ""} />
+              <FiRefreshCw className={isRefreshing ? "animate-spin" : ""} />
             </button>
           </div>
         </div>
@@ -218,7 +276,7 @@ export default function Overview() {
                       <FiDownload size={18} />
                     </button>
                     <button
-                      onClick={() => handleDelete([item._id])}
+                      onClick={() => confirmDelete([item._id])}
                       className="p-3 bg-white/90 backdrop-blur-md text-rose-600 rounded-2xl shadow-lg hover:bg-rose-600 hover:text-white transition-all"
                       title="Delete Image"
                     >
