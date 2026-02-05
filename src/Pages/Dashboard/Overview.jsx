@@ -187,7 +187,7 @@ export default function Overview() {
 
             {/* Captures Grid Section */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {captures?.map((item) => (
+              {sortedCaptures?.map((item) => (
                 <div
                   key={item._id}
                   className={`relative group bg-white rounded-[2rem] shadow-sm border-2 transition-all duration-300 overflow-hidden ${
