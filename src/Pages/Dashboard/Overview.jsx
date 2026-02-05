@@ -41,8 +41,8 @@ export default function Overview() {
     document.body.removeChild(link);
   };
 
-  // Selected Download Logic 
-  const handleDownloadAll = () => {
+  // Selected Download Logic
+  const handleDownloadSelected = () => {
     const selectedItems = captures.filter((item) =>
       selectedIds.includes(item._id),
     );
@@ -54,7 +54,7 @@ export default function Overview() {
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-      }, index * 300); 
+      }, index * 300);
     });
   };
 
@@ -99,6 +99,30 @@ export default function Overview() {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Select All / Unselect All Button */}
+            {captures.length > 0 && (
+              <button
+                onClick={handleSelectAll}
+                className="flex items-center gap-2 px-5 py-2.5 bg-gray-50 text-gray-700 rounded-xl font-bold hover:bg-gray-100 transition-all border border-gray-200"
+              >
+                <FiCheckCircle className={isLoading ? "animate-spin" : ""} />
+                {selectedIds.length === captures.length
+                  ? "Unselect All"
+                  : "Select All"}
+              </button>
+            )}
+
+            {/* Download Button */}
+            {selectedIds.length > 0 && (
+              <button
+                onClick={handleDownloadSelected}
+                className="flex items-center gap-2 px-5 py-2.5 bg-blue-50 text-blue-600 rounded-xl font-bold hover:bg-blue-100 transition-all border border-blue-200"
+              >
+                <FiDownload className={isLoading ? "animate-spin" : ""} /> Download ({selectedIds.length})
+              </button>
+            )}
+
+            {/* Delete Button */}
             {selectedIds.length > 0 && (
               <button
                 onClick={() => handleDelete(selectedIds)}
@@ -107,6 +131,8 @@ export default function Overview() {
                 <FiTrash2 /> Delete ({selectedIds.length})
               </button>
             )}
+
+            {/* Refresh Button */}
             <button
               onClick={() => refetch()}
               className="p-3 bg-gray-50 text-gray-600 rounded-xl hover:bg-gray-100 transition-all border border-gray-200"
