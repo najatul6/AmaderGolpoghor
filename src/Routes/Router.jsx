@@ -1,7 +1,7 @@
 import DashboardLayout from "@/Layout/DashboardLayout/DashboardLayout";
 import MainLayout from "@/Layout/MainLayout/MainLayout";
 import Signin from "@/Pages/Authentication/Signin";
-import Signup from "@/Pages/Authentication/Signup";
+// import Signup from "@/Pages/Authentication/Signup";
 import ErrorPage from "@/Pages/Common/ErrorPage";
 import Overview from "@/Pages/Dashboard/Overview";
 import Home from "@/Pages/Home/Home";
@@ -43,9 +43,9 @@ const Router = createBrowserRouter([
     path: "signin",
     element: <Signin />,
   },
-  {
-    path: "signUp",
-    element: <Signup />,
-  },
+  // {
+  //   path: "signUp",
+  //   element: <Signup />,
+  // },
 ]);
 export default Router;

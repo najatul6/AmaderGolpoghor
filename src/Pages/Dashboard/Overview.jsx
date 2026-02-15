@@ -196,7 +196,7 @@ export default function Overview() {
             )}
 
             {/* Delete Button */}
-            {selectedIds.length > 0 && DBuser?.role === "admin" && (
+            {selectedIds.length > 0 && DBuser?.role === "superadmin" && (
               <button
                 onClick={() => confirmDelete(selectedIds)}
                 className="flex items-center gap-2 px-5 py-2.5 bg-rose-50 text-rose-600 rounded-xl font-bold hover:bg-rose-100 transition-all border border-rose-200"
