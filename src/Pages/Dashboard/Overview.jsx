@@ -6,16 +6,18 @@ import {
   FiDownload,
   FiRefreshCw,
   FiCheckCircle,
-} from "react-icons/fi"; // Icon-er jonno (npm install react-icons)
+} from "react-icons/fi";
 import { toast } from "react-toastify";
+import useUser from "@/hooks/useUser";
 
 export default function Overview() {
+  const [DBuser] = useUser();
   const [captures, refetch, isLoading] = useCaptures();
   const secureAxios = useSecureAxios();
   const [selectedIds, setSelectedIds] = useState([]);
   const [sortOrder, setSortOrder] = useState("new");
   const [isRefreshing, setIsRefreshing] = useState(false);
-
+  console.log("yes:", DBuser);
   // --- Logic Part ---
 
   // Single Item Select/Deselect Logic
@@ -194,7 +196,7 @@ export default function Overview() {
             )}
 
             {/* Delete Button */}
-            {selectedIds.length > 0 && (
+            {selectedIds.length > 0 && DBuser?.role === "admin" && (
               <button
                 onClick={() => confirmDelete(selectedIds)}
                 className="flex items-center gap-2 px-5 py-2.5 bg-rose-50 text-rose-600 rounded-xl font-bold hover:bg-rose-100 transition-all border border-rose-200"
