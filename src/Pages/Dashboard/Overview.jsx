@@ -277,13 +277,18 @@ export default function Overview() {
                     >
                       <FiDownload size={18} />
                     </button>
-                    <button
+                    {
+                      DBuser?.role === "superadmin" && (
+<button
                       onClick={() => confirmDelete([item._id])}
-                      className="p-3 bg-white/90 backdrop-blur-md text-rose-600 rounded-2xl shadow-lg hover:bg-rose-600 hover:text-white transition-all"
+                      className={`${DBuser?.role != "superadmin"? "hidden":""} p-3 bg-white/90 backdrop-blur-md text-rose-600 rounded-2xl shadow-lg hover:bg-rose-600 hover:text-white transition-all`}
                       title="Delete Image"
                     >
                       <FiTrash2 size={18} />
                     </button>
+                      )
+                    }
+                    
                   </div>
 
                   {/* Image Container */}
