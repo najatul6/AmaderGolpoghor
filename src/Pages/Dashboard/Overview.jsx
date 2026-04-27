@@ -250,7 +250,7 @@ export default function Overview() {
               {sortedCaptures?.map((item) => (
                 <div
                   key={item._id}
-                  className={`relative group bg-white rounded-[2rem] shadow-sm border-2 transition-all duration-300 overflow-hidden ${
+                  className={`relative group bg-white rounded-4xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${
                     selectedIds.includes(item._id)
                       ? "border-pink-500 scale-[0.98]"
                       : "border-white hover:shadow-2xl hover:shadow-pink-100"
