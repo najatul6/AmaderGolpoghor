@@ -19,7 +19,7 @@ export default function Sidebar({ mobile }) {
     mobile && "h-screen"
   )}
 >
-  <h2 className="text-lg font-semibold mb-4 flex-shrink-0">My App</h2>
+  <h2 className="text-lg font-semibold mb-4 shrink-0">My App</h2>
 
   <nav className="flex-1 flex flex-col overflow-hidden">
     <div className="overflow-y-auto flex-1 space-y-2">
