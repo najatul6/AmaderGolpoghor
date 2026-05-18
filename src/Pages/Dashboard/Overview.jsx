@@ -17,7 +17,7 @@ export default function Overview() {
   const [selectedIds, setSelectedIds] = useState([]);
   const [sortOrder, setSortOrder] = useState("new");
   const [isRefreshing, setIsRefreshing] = useState(false);
-  console.log("yes:", DBuser);
+  // console.log("yes:", DBuser);
   // --- Logic Part ---
 
   // Single Item Select/Deselect Logic
@@ -166,7 +166,7 @@ export default function Overview() {
               📸 Captured <span className="text-pink-500">Moments</span>
             </h1>
             <p className="text-gray-400 text-sm mt-1">
-              মোট সংরক্ষিত ছবি: {captures.length}টি
+              মোট সংরক্ষিত ছবি: {captures?.length}টি
             </p>
           </div>
 
@@ -249,7 +249,7 @@ export default function Overview() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {sortedCaptures?.map((item) => (
                 <div
-                  key={item._id}
+                  key={item?._id}
                   className={`relative group bg-white rounded-4xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${selectedIds.includes(item._id)
                       ? "border-pink-500 scale-[0.98]"
                       : "border-white hover:shadow-2xl hover:shadow-pink-100"
@@ -257,7 +257,7 @@ export default function Overview() {
                 >
                   {/* Checkbox Overlay */}
                   <div
-                    onClick={() => handleSelect(item._id)}
+                    onClick={() => handleSelect(item?._id)}
                     className={`absolute top-4 left-4 z-20 w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all ${selectedIds.includes(item._id)
                         ? "bg-pink-500 border-pink-500 text-white"
                         : "bg-black/20 border-white text-transparent"
@@ -269,7 +269,7 @@ export default function Overview() {
                   {/* Action Buttons (Hover) */}
                   <div className="absolute top-4 right-4 z-20 flex flex-col gap-2 opacity-100 transition-opacity duration-300">
                     <button
-                      onClick={() => handleDownload(item.image, item.userEmail)}
+                      onClick={() => handleDownload(item?.image, item?.userEmail)}
                       className="p-3 bg-white/90 backdrop-blur-md text-blue-600 rounded-2xl shadow-lg hover:bg-blue-600 hover:text-white transition-all"
                       title="Download Image"
                     >
@@ -278,7 +278,7 @@ export default function Overview() {
                     {
                       DBuser?.role === "superadmin" && (
                         <button
-                          onClick={() => confirmDelete([item._id])}
+                          onClick={() => confirmDelete([item?._id])}
                           className="p-3 bg-white/90 backdrop-blur-md text-rose-600 rounded-2xl shadow-lg hover:bg-rose-600 hover:text-white transition-all"
                           title="Delete Image"
                         >
