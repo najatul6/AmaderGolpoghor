@@ -250,20 +250,18 @@ export default function Overview() {
               {sortedCaptures?.map((item) => (
                 <div
                   key={item._id}
-                  className={`relative group bg-white rounded-4xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${
-                    selectedIds.includes(item._id)
+                  className={`relative group bg-white rounded-4xl shadow-sm border-2 transition-all duration-300 overflow-hidden ${selectedIds.includes(item._id)
                       ? "border-pink-500 scale-[0.98]"
                       : "border-white hover:shadow-2xl hover:shadow-pink-100"
-                  }`}
+                    }`}
                 >
                   {/* Checkbox Overlay */}
                   <div
                     onClick={() => handleSelect(item._id)}
-                    className={`absolute top-4 left-4 z-20 w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all ${
-                      selectedIds.includes(item._id)
+                    className={`absolute top-4 left-4 z-20 w-6 h-6 rounded-full border-2 flex items-center justify-center cursor-pointer transition-all ${selectedIds.includes(item._id)
                         ? "bg-pink-500 border-pink-500 text-white"
                         : "bg-black/20 border-white text-transparent"
-                    }`}
+                      }`}
                   >
                     <FiCheckCircle size={16} />
                   </div>
@@ -279,16 +277,16 @@ export default function Overview() {
                     </button>
                     {
                       DBuser?.role === "superadmin" && (
-<button
-                      onClick={() => confirmDelete([item._id])}
-                      className="p-3 bg-white/90 backdrop-blur-md text-rose-600 rounded-2xl shadow-lg hover:bg-rose-600 hover:text-white transition-all"
-                      title="Delete Image"
-                    >
-                      <FiTrash2 size={18} />
-                    </button>
+                        <button
+                          onClick={() => confirmDelete([item._id])}
+                          className="p-3 bg-white/90 backdrop-blur-md text-rose-600 rounded-2xl shadow-lg hover:bg-rose-600 hover:text-white transition-all"
+                          title="Delete Image"
+                        >
+                          <FiTrash2 size={18} />
+                        </button>
                       )
                     }
-                    
+
                   </div>
 
                   {/* Image Container */}
