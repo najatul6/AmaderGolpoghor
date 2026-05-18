@@ -217,7 +217,7 @@ const Home = () => {
         )}
 
         {step === 6 && (
-          <div className="animate-bounce-in bg-gradient-to-br from-pink-500 to-rose-600 p-10 rounded-3xl text-white text-center shadow-2xl shadow-pink-200">
+          <div className="animate-bounce-in bg-linear-to-br from-pink-500 to-rose-600 p-10 rounded-3xl text-white text-center shadow-2xl shadow-pink-200">
             <h2 className="text-3xl font-bold mb-4">
               আমাদের বন্ধুত্বের চিঠি 💌
             </h2>
